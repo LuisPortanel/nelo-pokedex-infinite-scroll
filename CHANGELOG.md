@@ -1,0 +1,1 @@
+- NELO-1: Initialize project. Switch from `npm` to `yarn`
