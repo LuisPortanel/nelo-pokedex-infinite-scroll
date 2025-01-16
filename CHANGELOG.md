@@ -1,1 +1,2 @@
 - NELO-1: Initialize project. Switch from `npm` to `yarn`
+- NELO-2: Implement ZSA and create first Server Action `getPokemonList`
