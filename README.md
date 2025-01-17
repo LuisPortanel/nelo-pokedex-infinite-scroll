@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app@latest`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+To run the project, use `yarn`:
 
 ```bash
-npm run dev
-# or
+yarn install
+# and then
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the Pokedex with Infinite Scroll.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Dependencies
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The project implements cutting edge libraries in its latest versions:
 
-## Learn More
+- Next.js 15
+- React 19
+- Zod Server Actions (ZSA)
+- Typescript 5
+- Tailwind
+- Eslint 9
 
-To learn more about Next.js, take a look at the following resources:
+Instead of hitting directly the PokeAPI from the client, a couple of Server Actions were configured in the backend, which act as proxy and where all the heavy logic resides.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Those Server Actions are implemented with ZSA with Zod to apply validation to the params sent and to also add TS Types to the response of the Server Action.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Tailwind is used with the `@apply` approach to reduce the classes added to the DOM.
 
-## Deploy on Vercel
+The Infinite Scroll logic was implemented with Intersection Observer, by adding a listener element at the end of the list.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The logic was separated into different folders and files, like:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- /types
+- /server
+- /server/utils
+- /app/components
+- /utils
+- /utils/contants.ts
+- etc
+
+## Improvements
+
+The best feature that can be added is cache control, so it doesn't make a call to the Server Action each time.
+
+A simple way to do it, is to implement a useContext and store the response of the getPokemonList and getPokemonDetails. Everytime a request would be made, verify if its information exists in the context and use it instead of calling the Server Action.
