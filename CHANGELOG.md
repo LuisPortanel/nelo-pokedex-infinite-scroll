@@ -3,3 +3,4 @@
 - NELO-3: Implement Logic of fetch the details of each Pokemon in the map
 - NELO-4: Configure Tailwind to use `@apply` in scss files
 - NELO-5: Implement first approach of `<PokemonList />`
+- NELO-6: Configure Pokemon background color according to their type.
