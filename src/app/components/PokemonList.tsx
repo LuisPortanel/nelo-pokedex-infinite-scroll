@@ -1,4 +1,6 @@
 "use client";
+import "./PokemonList.scss";
+
 import { getPokemonList } from "@/server/pokemon/get";
 import { useEffect } from "react";
 import { useServerAction } from "zsa-react";

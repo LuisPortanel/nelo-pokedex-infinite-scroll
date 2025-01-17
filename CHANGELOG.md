@@ -1,3 +1,4 @@
 - NELO-1: Initialize project. Switch from `npm` to `yarn`
 - NELO-2: Implement ZSA and create first Server Action `getPokemonList`
 - NELO-3: Implement Logic of fetch the details of each Pokemon in the map
+- NELO-4: Configure Tailwind to use `@apply` in scss files
