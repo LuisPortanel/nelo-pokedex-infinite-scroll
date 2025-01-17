@@ -20,6 +20,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+main {
+  @apply flex flex-col items-center justify-center min-h-screen py-2 max-w-lg min-w-96 mx-auto bg-neutral-800;
+}
+
 /*
  *
  * Pokemon Types Background colors

@@ -1,4 +1,8 @@
 "use client";
+
+import { uCaseFirst } from "@/utils/strings";
+import "./PokemonDetails.scss";
+
 import { getPokemonById, PokemonDetailType } from "@/server/pokemon/get";
 import Image from "next/image";
 import Link from "next/link";
@@ -37,31 +41,58 @@ const PokemonDetails = ({ id }: { id: number }) => {
   }
 
   return (
-    <div className={`pokemon ${pokemonDetails.types[0].type.name}`}>
-      <Link href="/">Back to list</Link>
-      <h1>{pokemonDetails.name}</h1>
-      <Image
-        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonDetails.id}.png`}
-        alt={`Image of ${pokemonDetails.name}`}
-        width={100}
-        height={100}
-        priority
-      />
-      <div>
-        <h2>Abilities</h2>
-        <ul>
-          {pokemonDetails.abilities.map((ability) => (
-            <li key={ability.ability.name}>{ability.ability.name}</li>
-          ))}
-        </ul>
+    <div className={`pokemon pokemon-details `}>
+      <Link href="/" className="back" title="Go back">{`‹`}</Link>
+      <div className={`pokemon-image ${pokemonDetails.types[0].type.name}`}>
+        <Image
+          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonDetails.id}.png`}
+          alt={`Image of ${pokemonDetails.name}`}
+          width={250}
+          height={250}
+          priority
+        />
       </div>
-      <div>
-        <h2>Types</h2>
-        <ul>
-          {pokemonDetails.types.map((type) => (
-            <li key={type.type.name}>{type.type.name}</li>
-          ))}
-        </ul>
+      <h1 className="title">{uCaseFirst(pokemonDetails.name)}</h1>
+
+      <p className="number">N° {pokemonDetails.id}</p>
+
+      <div className="chip-container">
+        {pokemonDetails.types.map(({ type: { name } }) => (
+          <div className={`chip ${name}`} key={name}>
+            {uCaseFirst(name)}
+          </div>
+        ))}
+      </div>
+
+      <div className="stats-container">
+        <div className="stats">
+          <h2>Height</h2>
+          <p>{pokemonDetails.height}m</p>
+        </div>
+
+        <div className="stats">
+          <h2>Weight</h2>
+          <p>{pokemonDetails.weight}kg</p>
+        </div>
+
+        <div className="stats">
+          <h2>Order</h2>
+          <p>{pokemonDetails.order}</p>
+        </div>
+
+        <div className="stats">
+          <h2>Base Experience</h2>
+          <p>{pokemonDetails.base_experience}</p>
+        </div>
+
+        <div className="stats">
+          <h2>Abilities</h2>
+          <ul>
+            {pokemonDetails.abilities.map((ability) => (
+              <li key={ability.ability.name}>{ability.ability.name}</li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
