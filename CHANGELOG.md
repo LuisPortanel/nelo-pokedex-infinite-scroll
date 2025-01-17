@@ -4,3 +4,4 @@
 - NELO-4: Configure Tailwind to use `@apply` in scss files
 - NELO-5: Implement first approach of `<PokemonList />`
 - NELO-6: Configure Pokemon background color according to their type.
+- NELO-7: Implement `getPokemonById` Server Action and implement it in Pokemon Details page using `<PokemonDetails>` component

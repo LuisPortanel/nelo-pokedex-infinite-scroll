@@ -8,6 +8,8 @@ const GetPokemonListInputSchema = z.object({
   limit: z.number(),
 });
 
+const GetPokemonByIdInputSchema = z.number();
+
 type PokemonNamesAndUrlsDataType = {
   count: number;
   next: string | null;
@@ -44,7 +46,7 @@ type PokemonDetailFullType = {
   weight: number;
 };
 
-type PokemonDetailType = Omit<
+export type PokemonDetailType = Omit<
   PokemonDetailFullType,
   | "game_indices"
   | "moves"
@@ -53,24 +55,39 @@ type PokemonDetailType = Omit<
   | "held_items"
   | "location_area_encounters"
 >;
+
+const apiBaseUrl = "https://pokeapi.co/api/v2/pokemon/";
+
+const fetchPokemonDetailByUrl = async (
+  url: string
+): Promise<PokemonDetailFullType> => {
+  const pokemonDetailResponse = await fetch(url);
+  const pokemonDetailData: PokemonDetailFullType =
+    await pokemonDetailResponse.json();
+  return pokemonDetailData;
+};
+
+const fetchPokemonDetailById = async (
+  id: number
+): Promise<PokemonDetailFullType> =>
+  fetchPokemonDetailByUrl(`${apiBaseUrl}${id}`);
+
 export const getPokemonList = createServerAction()
   .input(GetPokemonListInputSchema)
   .handler(async ({ input }) => {
+    // First fetch the list of Pokemon names and URLs
     const pokemonNamesAndUrlsResponse = await fetch(
-      "https://pokeapi.co/api/v2/pokemon?offset=0&limit=20"
+      `${apiBaseUrl}?offset=${input.offset}&limit=${input.limit}`
     );
     const pokemonNamesAndUrlsData: PokemonNamesAndUrlsDataType =
       await pokemonNamesAndUrlsResponse.json();
 
+    // Then fetch the full details of each of those Pokemon
     const pokemonListFullData = await Promise.all(
-      pokemonNamesAndUrlsData.results.map(async (pokemonNameAndUrl) => {
-        const pokemonDetailResponse = await fetch(pokemonNameAndUrl.url);
-        const pokemonDetailData: PokemonDetailFullType =
-          await pokemonDetailResponse.json();
-        return pokemonDetailData;
-      })
+      pokemonNamesAndUrlsData.results.map(({ url }) =>
+        fetchPokemonDetailByUrl(url)
+      )
     );
-    console.log({ offset: input.offset, limit: input.limit });
 
     // Remove unnecessary and large data from the response
     const pokemonList: PokemonDetailType[] = pokemonListFullData.map(
@@ -88,6 +105,9 @@ export const getPokemonList = createServerAction()
     return pokemonList;
   });
 
-export const getPokemonById = async (id: string) => {
-  console.log({ id });
-};
+export const getPokemonById = createServerAction()
+  .input(GetPokemonByIdInputSchema)
+  .handler(async ({ input }) => {
+    const pokemonDetail = await fetchPokemonDetailById(input);
+    return pokemonDetail;
+  });
