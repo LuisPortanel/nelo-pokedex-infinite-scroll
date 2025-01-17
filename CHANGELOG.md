@@ -7,3 +7,4 @@
 - NELO-7: Implement `getPokemonById` Server Action and implement it in Pokemon Details page using `<PokemonDetails>` component
 - NELO-8: Implement IntersectionObserver in PokemonList to enable Infinite Scroll effect
 - NELO-9: Display better the information in PokemonDetails component
+- NELO-10: Reorganize project. Create utils. Abstract functions.

@@ -1,9 +1,9 @@
 .pokemon-details {
-  @apply bg-white border-white rounded-lg p-6 pt-2;
+  @apply bg-white border-white rounded-lg p-6 relative;
   @apply text-neutral-900;
 
   .back {
-    @apply text-6xl leading-[0.8] p-4 pl-0;
+    @apply text-6xl leading-[0.8] pt-0 pl-3 left-0 top-0 absolute;
   }
 
   .pokemon-image {
@@ -17,7 +17,7 @@
   }
 
   .chip-container {
-    @apply flex flex-wrap gap-2 pb-3;
+    @apply flex flex-wrap gap-2 pb-3 justify-center text-white;
   }
 
   .chip {
@@ -30,6 +30,7 @@
     .stats {
       h2 {
         @apply text-lg font-semibold;
+
         ~ * {
           @apply text-base border rounded p-2;
         }

@@ -1,11 +1,15 @@
 "use client";
+import { uCaseFirst } from "@/utils/strings";
 import "./PokemonList.scss";
 
-import { getPokemonList, PokemonDetailType } from "@/server/pokemon/get";
+import { getPokemonList } from "@/server/pokemon/get";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useServerAction } from "zsa-react";
+import { PokemonDetailType } from "@/types/pokemon";
+
+const pokemonPerFetch = 18;
 
 const PokemonList = () => {
   const [pokemonList, setPokemonList] = useState<PokemonDetailType[]>([]);
@@ -20,7 +24,7 @@ const PokemonList = () => {
       if (isPendingPokemonList) return;
 
       const [pokemonListResponse, err] = await executeGetPokemonList({
-        limit: 18,
+        limit: pokemonPerFetch,
         offset,
       });
 
@@ -30,7 +34,7 @@ const PokemonList = () => {
       }
 
       setPokemonList((prev) => [...prev, ...pokemonListResponse]);
-      setOffset((prev) => prev + 18);
+      setOffset((prev) => prev + pokemonPerFetch);
     },
     [executeGetPokemonList, isPendingPokemonList]
   );
@@ -40,6 +44,7 @@ const PokemonList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Infinite scroll observer
   useEffect(() => {
     if (observerRef.current) observerRef.current.disconnect();
 
@@ -76,9 +81,13 @@ const PokemonList = () => {
                 height={100}
               />
             </div>
-            <div>{pokemon.name}</div>
-            <div>{pokemon.weight}</div>
-            <div>{pokemon.types.map((type) => type.type.name).join(", ")}</div>
+            <div className="title">{uCaseFirst(pokemon.name)}</div>
+            <div>No° {pokemon.id}</div>
+            <div className="types">
+              {pokemon.types
+                .map(({ type: { name } }) => uCaseFirst(name))
+                .join(" / ")}
+            </div>
           </div>
         </Link>
       ))}

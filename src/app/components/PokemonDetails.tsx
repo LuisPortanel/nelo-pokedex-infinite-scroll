@@ -3,11 +3,12 @@
 import { uCaseFirst } from "@/utils/strings";
 import "./PokemonDetails.scss";
 
-import { getPokemonById, PokemonDetailType } from "@/server/pokemon/get";
+import { getPokemonById } from "@/server/pokemon/get";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useServerAction } from "zsa-react";
+import type { PokemonDetailType } from "@/types/pokemon";
 
 const PokemonDetails = ({ id }: { id: number }) => {
   const [pokemonDetails, setPokemonDetails] =
